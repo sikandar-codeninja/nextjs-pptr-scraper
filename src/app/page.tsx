@@ -28,7 +28,6 @@ export default function Home() {
     });
     const data = await response.json();
     setData(data);
-    console.log({data}); // Process your JSON response here
   };
 
 
@@ -37,12 +36,12 @@ export default function Home() {
     fontSize: string;
     lineHeight: string;
   }
-  
+
   interface Link {
     href: string;
     text: string;
   }
-  
+
   interface WebsiteData {
     title: string;
     description: string;
@@ -96,37 +95,53 @@ export default function Home() {
       </Card>
 
       {data && (
-          <div className="space-y-3">
-            <h1 className="text-xl font-bold text-gray-900">{data.title}</h1>
-            <p className="text-sm text-gray-600">{data.description}</p>
-            <div className="text-sm">
-              <strong>Primary Color:</strong> <span style={{color: data.primaryColor}}>{data.primaryColor}</span>
-              <br />
-              <strong>Secondary Color:</strong> <span style={{color: data.secondaryColor}}>{data.secondaryColor}</span>
-            </div>
-            <div className="text-sm">
-              <strong>Font:</strong> {data.fontDetails.fontFamily}, {data.fontDetails.fontSize}
-            </div>
-            <div className="space-y-2">
-              <strong>Headers Found:</strong>
-              <ul className="list-disc pl-5">
-                {data.headerText.map((text, index) => (
-                  <li key={index} className="text-sm text-gray-800">{text}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <strong>Links:</strong>
-              <ul className="list-disc pl-5">
-                {data.links.map((link, index) => (
-                  <li key={index} className="text-sm text-blue-600 hover:text-blue-800">
-                    <a href={link.href} target="_blank" rel="noopener noreferrer">{link.text || link.href}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <div className="space-y-3">
+          <h1 className="text-xl font-bold text-gray-900">{data.title}</h1>
+          <p className="text-sm text-gray-600">{data.description}</p>
+
+          <div className="flex items-center space-x-2">
+            <strong className="text-sm">Primary Color:</strong>
+            <div className="w-6 h-6 rounded-full border-2 border-slate-200" style={{ backgroundColor: data.primaryColor }}></div>
+            <span className="text-sm">{data.primaryColor}</span>
           </div>
-        )}
+
+          {/* Secondary Color */}
+          <div className="flex items-center space-x-2">
+            <strong className="text-sm">Secondary Color:</strong>
+            <div className="w-6 h-6 rounded-full border-2 border-slate-200" style={{ backgroundColor: data.secondaryColor }}></div>
+            <span className="text-sm">{data.secondaryColor}</span>
+          </div>
+          <div className="text-sm">
+            <strong>Font:</strong> {data.fontDetails.fontFamily}, {data.fontDetails.fontSize}
+          </div>
+          <div className="space-y-2">
+            <strong>Headers Found:</strong>
+            <ul className="list-disc pl-5">
+              {data.headerText.map((text, index) => (
+                <li key={index} className="text-sm text-gray-800">{text}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <strong>Links:</strong>
+            <ul className="list-disc pl-5">
+              {data.links.map((link, index) => (
+                <li key={index} className="text-sm text-blue-600 hover:text-blue-800">
+                  <a href={link.href} target="_blank" rel="noopener noreferrer">{link.text || link.href}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+            {data.images.map((imgSrc, index) => (
+              <div key={index} className="overflow-hidden rounded-lg shadow-lg">
+                <img src={imgSrc} alt={`Image ${index + 1}`} className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-110" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+      )}
     </main>
   );
 }
