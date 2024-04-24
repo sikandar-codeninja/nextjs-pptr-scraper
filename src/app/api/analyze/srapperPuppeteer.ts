@@ -10,7 +10,7 @@ export async function scrapeWebsiteDetails(url: string) {
             '--no-zygote'        // May be necessary for Linux environments without sandbox support
         ],
         executablePath: process.env.CHROME_BIN || '/app/.apt/usr/bin/google_chrome',
-        headless: true
+        headless: true,
     });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle2' });
