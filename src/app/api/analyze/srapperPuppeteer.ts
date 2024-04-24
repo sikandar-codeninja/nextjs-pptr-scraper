@@ -2,7 +2,9 @@ import puppeteer from "puppeteer";
 
 export async function scrapeWebsiteDetails(url: string) {
     const browser = await puppeteer.launch({
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        executablePath: process.env.CHROME_BIN || '/app/.apt/usr/bin/google_chrome',
+        headless: true
     });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle2' });
