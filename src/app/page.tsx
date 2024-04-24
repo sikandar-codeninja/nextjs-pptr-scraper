@@ -18,16 +18,22 @@ export default function Home() {
   ]
 
   const handleSubmit = async (event: FormEvent) => {
+
     event.preventDefault();
-    const response = await fetch('/api/analyze', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url }),
-    });
-    const data = await response.json();
-    setData(data?.data);
+    try {
+
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+      });
+      const data = await response.json();
+      setData(data?.data);
+    } catch (error) {
+      console.error('Failed to analyze page:', error);
+    }
   };
 
 
