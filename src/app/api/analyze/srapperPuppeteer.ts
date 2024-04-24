@@ -8,7 +8,14 @@ export async function scrapeWebsiteDetails(url) {
         // Launch browser with minimal sandboxing
         browser = await puppeteer.launch({
             executablePath: process.env.CHROME_BIN,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            args: ['--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-accelerated-2d-canvas',
+                '--no-first-run',
+                '--no-zygote',
+                '--single-process', // <- this one doesn't work on Windows
+                '--disable-gpu']
         });
         const page = await browser.newPage();
 
@@ -52,7 +59,7 @@ export async function scrapeWebsiteDetails(url) {
         console.error("Failed to scrape the website:", error);
         NextResponse.json({ error: `Failed to scrape the website. Please check the logs., ${error}` });
         return { error: `Failed to scrape the website. Please check the logs., ${error}` };
-        
+
     } finally {
         if (browser) {
             await browser.close();
