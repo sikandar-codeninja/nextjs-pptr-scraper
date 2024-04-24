@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 
 export async function scrapeWebsiteDetails(url) {
@@ -47,7 +48,9 @@ export async function scrapeWebsiteDetails(url) {
         return data;
     } catch (error) {
         console.error("Failed to scrape the website:", error);
-        return { error: "Failed to scrape the website. Please check the logs." };
+        NextResponse.json({ error: `Failed to scrape the website. Please check the logs., ${error}` });
+        return { error: `Failed to scrape the website. Please check the logs., ${error}` };
+        
     } finally {
         if (browser) {
             await browser.close();

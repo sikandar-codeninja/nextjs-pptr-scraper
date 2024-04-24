@@ -14,9 +14,13 @@ export async function POST(req: NextApiRequest , res: NextApiResponse | any) {
   try {
     const data = await scrapeWebsiteDetails(url);
 
+  
+
     return  NextResponse.json({ data, message: "success", status: 200 });
 
   } catch (error) {
+
+    NextResponse.json({ error: "success", status: 500 });
     console.error('Failed to analyze page:', error);
     // res.status(500).json({ error: 'Failed to process the page' });
   }
