@@ -22,7 +22,6 @@ export default function Home() {
     setIsLoading(true); 
     event.preventDefault();
     try {
-
       const response = await fetch('/api/analyze', {
         method: 'POST',
         headers: {
@@ -32,6 +31,7 @@ export default function Home() {
       });
       const data = await response.json();
       setData(data?.data);
+      window.scrollTo({ top: 500, behavior: 'smooth' });
     } catch (error) {
       console.error('Failed to analyze page:', error);
     }
