@@ -1,21 +1,25 @@
+import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { scrapeWebsiteDetails } from "./srapperPuppeteer";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-      res.setHeader('Allow', ['POST']);
-      return res.status(405).end(`Method ${req.method} Not Allowed`);
+export async function POST(req: NextApiRequest , res: NextApiResponse | any) {
+  const jsonReq = await req.json();
+  const url = jsonReq.url;
+  console.log({ url });
+ 
+  if (!url) {
+    return  NextResponse.json({ message: "url is required", status: 400 })
+    console.log({ url })
   }
-
   try {
-      const { url } = req.body;
-      if (!url) {
-          return res.status(400).json({ error: 'URL parameter is required' });
-      }
-      
-      const data = await scrapeWebsiteDetails(url); // Assuming this function might throw an error
-      res.status(200).json(data);
+    const data = await scrapeWebsiteDetails(url);
+
+    return  NextResponse.json({ data , status: 200 });
+
   } catch (error) {
-      console.error('Error in /api/analyze:', error);
-      res.status(500).json({ error: 'Internal server error', details: error.message });
+    console.error('Failed to analyze page:', error);
+    // res.status(500).json({ error: 'Failed to process the page' });
+    return  NextResponse.json({ error: 'Failed to process the page', status: 500 });
+
   }
 }
