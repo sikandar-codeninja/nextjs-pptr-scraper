@@ -6,7 +6,6 @@ export async function scrapeWebsiteDetails(url) {
     try {
 
         console.log('CHROME_BIN:', process.env.CHROME_BIN);
-        
         // Launch browser with minimal sandboxing
         browser = await puppeteer.launch({
             executablePath: process.env.CHROME_BIN,
