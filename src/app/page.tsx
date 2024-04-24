@@ -9,6 +9,7 @@ import { FormEvent, useState } from "react";
 export default function Home() {
   const [url, setUrl] = useState("");
   const [data, setData] = useState<WebsiteData | null>(null);
+  const [isLoading, setIsLoading] = useState(false); 
 
   const crousalArray = [
     "https://assets.mediamodifier.com/mockups/5eb298d9344e64249900dbbc/instagram-post-mockup-maker.jpg",
@@ -18,7 +19,7 @@ export default function Home() {
   ]
 
   const handleSubmit = async (event: FormEvent) => {
-
+    setIsLoading(true); 
     event.preventDefault();
     try {
 
@@ -34,6 +35,7 @@ export default function Home() {
     } catch (error) {
       console.error('Failed to analyze page:', error);
     }
+    setIsLoading(false); 
   };
 
 
@@ -73,7 +75,9 @@ export default function Home() {
               onChange={(e) => setUrl(e.target.value)}
             />
             <div className="flex justify-center">
-              <Button type="submit" variant="outline" className="w-full rounded m-6">Submit</Button>
+              <Button type="submit" variant="default" className="w-full rounded m-6"
+              disabled={isLoading}
+              >Submit</Button>
             </div>
           </form>
         </CardHeader>
