@@ -2,7 +2,13 @@ import puppeteer from "puppeteer";
 
 export async function scrapeWebsiteDetails(url: string) {
     const browser = await puppeteer.launch({
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--single-process',  // May be necessary if running on a server with limited resources
+            '--no-zygote'        // May be necessary for Linux environments without sandbox support
+        ],
         executablePath: process.env.CHROME_BIN || '/app/.apt/usr/bin/google_chrome',
         headless: true
     });
