@@ -27,7 +27,7 @@ export default function Home() {
       body: JSON.stringify({ url }),
     });
     const data = await response.json();
-    setData(data);
+    setData(data?.data);
   };
 
 
@@ -102,17 +102,17 @@ export default function Home() {
           <div className="flex items-center space-x-2">
             <strong className="text-sm">Primary Color:</strong>
             <div className="w-6 h-6 rounded-full border-2 border-slate-200" style={{ backgroundColor: data.primaryColor }}></div>
-            <span className="text-sm">{data.primaryColor}</span>
+            <span className="text-sm">{data?.primaryColor}</span>
           </div>
 
           {/* Secondary Color */}
           <div className="flex items-center space-x-2">
             <strong className="text-sm">Secondary Color:</strong>
             <div className="w-6 h-6 rounded-full border-2 border-slate-200" style={{ backgroundColor: data.secondaryColor }}></div>
-            <span className="text-sm">{data.secondaryColor}</span>
+            <span className="text-sm">{data?.secondaryColor}</span>
           </div>
           <div className="text-sm">
-            <strong>Font:</strong> {data.fontDetails.fontFamily}, {data.fontDetails.fontSize}
+            <strong>Font:</strong> {data?.fontDetails?.fontFamily}, {data.fontDetails?.fontSize}
           </div>
           <div className="space-y-2">
             <strong>Headers Found:</strong>

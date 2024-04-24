@@ -8,18 +8,16 @@ export async function POST(req: NextApiRequest , res: NextApiResponse | any) {
   console.log({ url });
  
   if (!url) {
-    return  NextResponse.json({ message: "url is required", status: 400 })
+    return  NextResponse.json({ message: "url is required" })
     console.log({ url })
   }
   try {
     const data = await scrapeWebsiteDetails(url);
 
-    return  NextResponse.json({ data , status: 200 });
+    return  NextResponse.json({ data, message: "success", status: 200 });
 
   } catch (error) {
     console.error('Failed to analyze page:', error);
     // res.status(500).json({ error: 'Failed to process the page' });
-    return  NextResponse.json({ error: 'Failed to process the page', status: 500 });
-
   }
 }
