@@ -1,0 +1,8 @@
+# heroku.yml
+build:
+  docker:
+    web: Dockerfile
+release:
+  image: web
+run:
+  web: yarn start
