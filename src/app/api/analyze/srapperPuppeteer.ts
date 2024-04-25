@@ -24,7 +24,7 @@ export async function scrapeWebsiteDetails(url: string): Promise<WebsiteDetails>
     let browser = null;
     try {
         browser = await puppeteer.launch({
-            executablePath: process.env.CHROME_BIN,
+            executablePath: process.env.CHROME_BIN || '/usr/bin/google_chrome',
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
             headless: false
         });

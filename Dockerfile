@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Puppeteer dependencies for running full Chrome,
 # not just Chromium provided by Puppeteer
+# Install Chrome and create a symbolic link
 RUN apt-get update && apt-get install -y \
     wget \
     ca-certificates \
@@ -27,10 +28,12 @@ RUN apt-get update && apt-get install -y \
     libgbm1 \
     --no-install-recommends \
     && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install \
+    && dpkg -i google-chrome-stable_current_amd64.deb || apt-get -fy install \
     && rm google-chrome-stable_current_amd64.deb \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -s /usr/bin/google-chrome /usr/bin/google_chrome # Create a symbolic link
+
 
 # Copy package.json, yarn.lock, and other configuration files
 COPY package.json yarn.lock ./
