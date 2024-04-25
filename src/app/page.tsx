@@ -9,7 +9,7 @@ import { FormEvent, useState } from "react";
 export default function Home() {
   const [url, setUrl] = useState("");
   const [data, setData] = useState<WebsiteData | null>(null);
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
 
   const crousalArray = [
     "https://assets.mediamodifier.com/mockups/5eb298d9344e64249900dbbc/instagram-post-mockup-maker.jpg",
@@ -19,7 +19,7 @@ export default function Home() {
   ]
 
   const handleSubmit = async (event: FormEvent) => {
-    setIsLoading(true); 
+    setIsLoading(true);
     event.preventDefault();
     try {
       const response = await fetch('/api/analyze', {
@@ -35,7 +35,7 @@ export default function Home() {
     } catch (error) {
       console.error('Failed to analyze page:', error);
     }
-    setIsLoading(false); 
+    setIsLoading(false);
   };
 
 
@@ -61,6 +61,7 @@ export default function Home() {
     links: Link[];
     images: string[];
     mainContentText: string;
+    buttonColors: string[];
   }
 
 
@@ -76,7 +77,7 @@ export default function Home() {
             />
             <div className="flex justify-center">
               <Button type="submit" variant="default" className="w-full rounded m-6"
-              disabled={isLoading}
+                disabled={isLoading}
               >Submit</Button>
             </div>
           </form>
@@ -120,6 +121,16 @@ export default function Home() {
             <strong className="text-sm">Secondary Color:</strong>
             <div className="w-6 h-6 rounded-full border-2 border-slate-200" style={{ backgroundColor: data.secondaryColor }}></div>
             <span className="text-sm">{data?.secondaryColor}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <strong className="text-sm">Button Colors:</strong>
+            {data.buttonColors.length > 0 ? (
+              data.buttonColors.map((color, index) => (
+                <div key={index} className="w-6 h-6 rounded-full border-2 border-slate-200" style={{ backgroundColor: color }}></div>
+              ))
+            ) : (
+              <span className="text-sm">No button colors detected</span>
+            )}
           </div>
           <div className="text-sm">
             <strong>Font:</strong> {data?.fontDetails?.fontFamily}, {data.fontDetails?.fontSize}
