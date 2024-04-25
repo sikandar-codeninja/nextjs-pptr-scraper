@@ -1,12 +1,10 @@
-# Use the official Node.js 14 image.
+# Use the official Node.js 20 image.
 FROM node:20-slim
 
 # Set the working directory in the Docker container
 WORKDIR /app
 
-# Puppeteer dependencies for running full Chrome,
-# not just Chromium provided by Puppeteer
-# Install Chrome and create a symbolic link
+# Install dependencies for Puppeteer and Google Chrome
 RUN apt-get update && apt-get install -y \
     wget \
     ca-certificates \
@@ -26,14 +24,13 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     xdg-utils \
     libgbm1 \
-    --no-install-recommends \
-    && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && dpkg -i google-chrome-stable_current_amd64.deb || apt-get -fy install \
-    && rm google-chrome-stable_current_amd64.deb \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && ln -s /usr/bin/google-chrome /usr/bin/google_chrome # Create a symbolic link
-
+    gnupg2 \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable \
+    && ln -sf /usr/bin/google-chrome /usr/bin/google_chrome \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy package.json, yarn.lock, and other configuration files
 COPY package.json yarn.lock ./
@@ -42,7 +39,7 @@ COPY next.config.mjs ./
 COPY postcss.config.mjs ./
 COPY tailwind.config.ts ./
 
-# Install dependencies
+# Install production dependencies
 RUN yarn install --production
 
 # Copy local code to the container image
