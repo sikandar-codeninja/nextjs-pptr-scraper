@@ -1,5 +1,5 @@
 # Use the official Node.js 14 image.
-FROM node:14-slim
+FROM node:20-slim
 
 # Set the working directory in the Docker container
 WORKDIR /app
