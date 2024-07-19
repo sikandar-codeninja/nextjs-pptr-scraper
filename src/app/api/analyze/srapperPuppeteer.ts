@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
+import path from "path";
 
 export async function scrapeWebsiteDetails(url: string): Promise<String> {
+  console.log("dirname", __dirname);
+  console.log("pathTOBin", path.join(__dirname, "..", "..", "..", "..", ".."));
   let browser = null;
   let data: string = "";
   try {
@@ -107,7 +110,7 @@ export async function scrapeWebsiteDetails(url: string): Promise<String> {
       return jsonString;
     });
     await browser.close();
-    console.log("Extracted Data: ", data);
+    // console.log("Extracted Data: ", data);
   } catch (error) {
     console.error("Failed to scrape the website:", error);
     NextResponse.json({
