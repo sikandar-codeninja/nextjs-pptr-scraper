@@ -9,8 +9,10 @@ export async function scrapeWebsiteDetails(url: string): Promise<string> {
   let data: string = "";
 
   try {
-    // Find the Puppeteer cache directory
-    const puppeteerCacheDir = path.resolve(process.cwd(), ".cache/puppeteer");
+    // Use the environment variable or fallback to the known path
+    const puppeteerCacheDir =
+      process.env.PUPPETEER_CACHE_DIR ||
+      path.resolve(process.cwd(), ".cache/puppeteer");
     const chromePath = path.join(
       puppeteerCacheDir,
       "chrome",
