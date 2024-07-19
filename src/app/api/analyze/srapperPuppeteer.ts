@@ -1,16 +1,36 @@
 import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 import path from "path";
+import fs from "fs";
 
-export async function scrapeWebsiteDetails(url: string): Promise<String> {
+export async function scrapeWebsiteDetails(url: string): Promise<string> {
   console.log("dirname", __dirname);
-  console.log("pathTOBin", path.join(__dirname, "..", "..", "..", "..", ".."));
   let browser = null;
   let data: string = "";
+
   try {
+    // Find the Puppeteer cache directory
+    const puppeteerCacheDir = path.resolve(process.cwd(), ".cache/puppeteer");
+    const chromePath = path.join(
+      puppeteerCacheDir,
+      "chrome",
+      "linux-126.0.6478.182",
+      "chrome-linux64",
+      "chrome"
+    );
+
+    // Verify if the chrome executable exists
+    if (!fs.existsSync(chromePath)) {
+      throw new Error(`Chrome executable not found at ${chromePath}`);
+    }
+
+    console.log(`Using Chrome executable at: ${chromePath}`);
+
     browser = await puppeteer.launch({
       headless: true,
+      executablePath: chromePath,
     });
+
     const page = await browser.newPage();
     const navigationPromise = page.waitForNavigation({
       waitUntil: "networkidle0",
@@ -110,12 +130,9 @@ export async function scrapeWebsiteDetails(url: string): Promise<String> {
       return jsonString;
     });
     await browser.close();
-    // console.log("Extracted Data: ", data);
   } catch (error) {
     console.error("Failed to scrape the website:", error);
-    NextResponse.json({
-      error: `Failed to scrape the website. Please check the logs., ${error}`,
-    });
+    return `Failed to scrape the website. Please check the logs. ${error}`;
   }
   return data;
 }
