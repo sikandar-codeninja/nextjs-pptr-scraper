@@ -10,8 +10,6 @@ export async function scrapeWebsiteDetails(url: string): Promise<String> {
   try {
     browser = await puppeteer.launch({
       headless: "shell",
-      executablePath:
-        "/codebuild/output/src737244878/src/nextjs-pptr-scraper/.cache/puppeteer/chrome-headless-shell/linux-126.0.6478.182/chrome-headless-shell-linux64/chrome-headless-shell",
     });
     const page = await browser.newPage();
     const navigationPromise = page.waitForNavigation({
