@@ -9,7 +9,7 @@ export async function scrapeWebsiteDetails(url: string): Promise<String> {
   let data: string = "";
   try {
     browser = await puppeteer.launch({
-      headless: "shell",
+      headless: true,
     });
     const page = await browser.newPage();
     const navigationPromise = page.waitForNavigation({
